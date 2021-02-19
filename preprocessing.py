@@ -2,7 +2,8 @@ from sklearn.datasets import make_classification
 import numpy as np
 import pandas as pd
 import numpy as np
-import open3d as open
+#import open3d as open
+
 import warnings
 warnings.filterwarnings('ignore')
 import os
@@ -13,6 +14,7 @@ from plyfile import PlyData, PlyElement
 from laspy.file import File
 from pyntcloud import PyntCloud
 import csv
+
 
 dirname = os.path.dirname(__file__)
 filename = os.path.join(dirname, 'gshpub.dat')
@@ -65,10 +67,10 @@ def ply_to_csv():
 
     df.to_csv (r'C:\Users\A. Androutsopoulos\PycharmProjects\MDDSCG\paris.csv', index=None)
 
-def ply_cloud_vis():
-    cloud = open.io.read_point_cloud(filename3) # Read the point cloud
+# def ply_cloud_vis():
+#     cloud = open.io.read_point_cloud(filename3) # Read the point cloud
     # open.io.write_point_cloud(filename4, cloud, write_ascii=True)
-    open.visualization.draw_geometries([cloud]) # Visualize the point cloud
+    # open.visualization.draw_geometries([cloud]) # Visualize the point cloud
 
 def visualize_3d(X, y, algorithm="tsne", title="Data in 3D"):
     from sklearn.manifold import TSNE
@@ -149,8 +151,15 @@ def read_dataset():
     paris = os.path.join(dirname, 'paris.csv')
 
     earthquakes_prob = pd.read_csv(earth)
+
     santorini_lidar = pd.read_csv(santorini)
+    santorini_lidar = santorini_lidar.dropna()
+    santorini_lidar = santorini_lidar.reset_index(drop=True)
+
     paris_static_scanner = pd.read_csv(paris)
+    paris_static_scanner = paris_static_scanner.dropna()
+    paris_static_scanner = paris_static_scanner.reset_index(drop=True)
+
     artidicial_data = artificial_dataset()
 
     return earthquakes_prob, santorini_lidar, paris_static_scanner, artidicial_data
@@ -172,6 +181,6 @@ def KD_tree():
     artificial = artificial_data.to_numpy()
     artificial = artificial.tolist()
 
-    return earthquakes,santorini, paris, artificial
+    return earthquakes, santorini, paris, artificial
 # ply_cloud_vis()
 

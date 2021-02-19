@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import timeit
+import preprocessing
+import random
 
 
 def make_kd_tree(points, dim, i=0):
@@ -57,8 +59,8 @@ def dist_sq_dim(a, b):
 
 
 # First create kd tree, and then do the knn query.
-def kd_and_knn(data1, dimensions, test):
-    kd_tree = make_kd_tree(data1, dimensions)
+def kd_and_knn(data, dimensions, test):
+    kd_tree = make_kd_tree(data, dimensions)
     result1 = []
     start = timeit.default_timer()
     result1.append(tuple(get_knn(kd_tree, [0] * dim, 3, dim, dist_sq_dim)))
@@ -68,14 +70,8 @@ def kd_and_knn(data1, dimensions, test):
     return end
 
 
-# Βάση σεισμών Λάμπρου
-Y = pd.read_csv("database.csv")
-Y = Y[['Latitude', 'Longitude', 'Magnitude']]
-Y = Y.to_numpy()
+data1, data2, data3, data4 = preprocessing.KD_tree()
 N = 10
-Y1 = Y[np.random.choice(N, size=N, replace=False)]
-data = Y.tolist()
-
-query = Y1.tolist()
-print("Time for knn: ", kd_and_knn(data, dim, query))
+query = random.sample(data4, N)
+print("Time for knn for N points and 3 neighbors: ", kd_and_knn(data4, dim, query))
 print("\n\n")

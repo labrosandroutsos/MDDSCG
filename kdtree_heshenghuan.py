@@ -5,7 +5,7 @@ from collections import deque
 import pandas as pd
 import random
 import timeit
-
+import preprocessing
 
 class KDNode:
     # Class for KD Node with kd-tree data and methods.
@@ -273,17 +273,12 @@ COMPARE_CHILD = {
     1: (operator.ge, operator.add),
 }
 
-# Βάση σεισμών Λάμπρου
-Y = pd.read_csv("database.csv")
-Y = Y[['Latitude', 'Longitude', 'Magnitude']]
-Y = Y.to_numpy()
-Y = Y.tolist()
 
+data1, data2, data3, data4 = preprocessing.KD_tree()
 points = []
-for i in Y:
+for i in data4:
     points.append({1: i[0], 2: i[1], 3: i[2]})
 
-# print(points)
 # Create the kd tree.
 root = create(points, dimensions=3)
 
@@ -303,6 +298,6 @@ for i in range(N):
     end_q = timeit.default_timer() - start_q
     result += end_q
 
-print("Time for knn queries for 10 random points and 3 neighbors: ", result)
+print("Time for knn queries for N random points and 3 neighbors: ", result)
 # print("visualizing the kd-tree: ")
 # visualizing(root)
