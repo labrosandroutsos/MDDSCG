@@ -28,7 +28,6 @@ filename4 = os.path.join(dirname, 'LDR-EU12_12-2012-137-06.LAS')
 #
 
 
-
 def las_to_csv():
     inFile = File(filename4, mode = "r")
 
@@ -140,7 +139,7 @@ def artificial_dataset():
     X = pd.DataFrame(X)
     y = pd.Series(y)
 
-    visualize_3d(X, y)
+    # visualize_3d(X, y)
     return X
 
 
