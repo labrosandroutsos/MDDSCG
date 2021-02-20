@@ -1,6 +1,7 @@
 import csv
-import time
+import timeit
 import random
+import preprocessing
 
 def pre_order(root, string=""):
     if root:
@@ -26,47 +27,50 @@ else:
 def print_options():
     print("\n//////////// MENU ////////////")
     print("0 - Print Tree")
-    print("1 - Search Node")
-    print("2 - kNN Query")
+    print("1 - kNN Query")
     print("-1 - Exit Program")
     print("//////////////////////////////")
 
 
-choice_data = int(input("0 - Load Dataset\n1 - Random Dataset\n-> "))
+print("Which database do you want?")
+print("1 for Earthquake Data")
+print("2 for Santorini Lidar Data")
+print("3 for Paris Static Scanner Data")
+print("4 for Artificial Data")
 
-if choice_data == 0:
-    my_nodes = []
+choose_data = int(input("Enter a number from above: "))
+data1, data2, data3, data4 = preprocessing.KD_tree()
+my_nodes = []
 
+
+def load_data(selection):
+    if selection == 1:
+        data = data1
+    elif selection == 2:
+        data = data2
+    elif selection == 3:
+        data = data3
+    else:
+        data = data4
     nodes_counter = 0
-    with open("database.csv", mode='r', encoding="utf-8") as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        line_count = 0
-        for row in csv_reader:
-            if line_count > 0:
-                my_nodes.append(
-                    Node([float(row["Latitude"]), float(row["Longitude"]), float(row["Magnitude"])],
-                         row["Date"] + " " + row["Time"]))
-                nodes_counter += 1
-            line_count += 1
-        print('Number of Nodes: ' + str(nodes_counter))
+    el_count = 0
+    for el in data:
+        my_nodes.append(Node([float(el[0]), float(el[1]), float(el[2])], el_count))
+        nodes_counter += 1
+        el_count += 1
+    print('Number of Nodes: ' + str(nodes_counter))
 
-else:
-    my_nodes = []
 
-    for j in range(0, int(input("Give the number of Nodes you want to create: "))):
-        coords = []
-        for k in range(0, 3):
-            coords.append(random.random() * 1024)
-        my_nodes.append(Node(coords, 'data'))
+load_data(choose_data)
 
 # Build Start
-start = time.time()
+start = timeit.default_timer()
 
 
 x_sorted_nodes = sorted(my_nodes, key=lambda l: (l.coords[0], l.coords[1]))
 my_root, node_list = create_tree(x_sorted_nodes)
-end = time.time()
-print("Build Time: " + str(end - start))
+end = timeit.default_timer() - start
+print("Build Time: " + str(end))
 # Build End
 
 
@@ -77,18 +81,18 @@ while choice != -1:
     # Print Tree
     if choice == 0:
         print('-----------------------')
-        start = time.time()
+        start = timeit.default_timer()
         pre_order(my_root)
-        end = time.time()
+        end = timeit.default_timer() - start
         print('-----------------------')
     # Search
     elif choice == 1:
-        start = time.time()
+        start = timeit.default_timer()
         knn(my_root, node_list, 3)
-        end = time.time()
+        end = timeit.default_timer() - start
 
     print('-----------------------')
-    print("Action Time: " + str(end - start))
+    print("Action Time: " + str(end))
     print('-----------------------')
     print_options()
     choice = int(input())
