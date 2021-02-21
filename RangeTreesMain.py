@@ -63,11 +63,12 @@ def load_data(selection):
 
 load_data(choose_data)
 
-# Build Start
-start = timeit.default_timer()
+
 
 
 x_sorted_nodes = sorted(my_nodes, key=lambda l: (l.coords[0], l.coords[1]))
+# Build Start
+start = timeit.default_timer()
 my_root, node_list = create_tree(x_sorted_nodes)
 end = timeit.default_timer() - start
 print("Build Time: " + str(end))
@@ -88,7 +89,7 @@ while choice != -1:
     # Search
     elif choice == 1:
         start = timeit.default_timer()
-        knn(my_root, node_list, 3)
+        knn(my_root, node_list, 200)
         end = timeit.default_timer() - start
 
     print('-----------------------')

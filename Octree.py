@@ -227,15 +227,18 @@ def main():
     # configuration
     leaf_size = 4
     min_extent = 0.0001
-    k = 3
+    k = 10
     data1, data2, data3, data4 = preprocessing.KD_tree()
     print("\n//////////// kNN ////////////")
     print("1st Dataset")
     result_set = KNNResultSet(capacity=k)
     db_np = np.array(data1)
+
     root = octree_construction(db_np, leaf_size, min_extent)
+
+
     start = timeit.default_timer()
-    for x in db_np:
+    for x in db_np[0:999]:
         octree_knn_search(root, db_np, result_set, x)
     end = timeit.default_timer() - start
     print("kNN Time: " + str(end))
@@ -243,9 +246,13 @@ def main():
     print("2nd Dataset")
     result_set = KNNResultSet(capacity=k)
     db_np = np.array(data2)
+    start_tree = timeit.default_timer()
     root = octree_construction(db_np, leaf_size, min_extent)
+    end_tree = timeit.default_timer() - start_tree
+    print("Tree Time: " + str(end_tree))
+
     start = timeit.default_timer()
-    for x in db_np:
+    for x in db_np[0:999]:
         octree_knn_search(root, db_np, result_set, x)
     end = timeit.default_timer() - start
     print("kNN Time: " + str(end))
@@ -255,7 +262,7 @@ def main():
     db_np = np.array(data3)
     root = octree_construction(db_np, leaf_size, min_extent)
     start = timeit.default_timer()
-    for x in db_np:
+    for x in db_np[0:999]:
         octree_knn_search(root, db_np, result_set, x)
     end = timeit.default_timer() - start
     print("kNN Time: " + str(end))
@@ -265,7 +272,7 @@ def main():
     db_np = np.array(data4)
     root = octree_construction(db_np, leaf_size, min_extent)
     start = timeit.default_timer()
-    for x in db_np:
+    for x in db_np[0:999]:
         octree_knn_search(root, db_np, result_set, x)
     end = timeit.default_timer() - start
     print("kNN Time: " + str(end))

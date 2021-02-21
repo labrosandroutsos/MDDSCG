@@ -275,10 +275,8 @@ COMPARE_CHILD = {
 
 
 data1, data2, data3, data4 = preprocessing.KD_tree()
-print("data1", len(data1))
-print("data2", len(data2))
 points = []
-for i in data1:
+for i in data2:
     points.append({1: i[0], 2: i[1], 3: i[2]})
 
 # Create the kd tree.
@@ -286,9 +284,9 @@ start = timeit.default_timer()
 root = create(points, dimensions=3)
 print("tree", timeit.default_timer() - start)
 
-N = 100
+N = 1000
 # random query sample.
-query = random.sample(points, N)
+query = points[0:(N-1)]
 
 # Euclidean distance metric
 EuclideanDistance = (lambda a, b: math.sqrt(
@@ -296,7 +294,7 @@ EuclideanDistance = (lambda a, b: math.sqrt(
 f = EuclideanDistance
 result = 0
 # Knn query
-for i in range(N):
+for i in range(N-1):
     start_q = timeit.default_timer()
     ans = root.search_knn(query[i], k=1000, dist=f)
     end_q = timeit.default_timer() - start_q

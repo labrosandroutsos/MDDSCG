@@ -59,23 +59,27 @@ def dist_sq_dim(a, b):
 
 
 # First create kd tree, and then do the knn query.
-def kd_and_knn(data, dimensions, test):
-    kd_tree = make_kd_tree(data, dimensions)
+def kd_and_knn(tree, dimensions, test):
     result1 = []
     start = timeit.default_timer()
-    result1.append(tuple(get_knn(kd_tree, [0] * dim, 1000, dim, dist_sq_dim)))
+    result1.append(tuple(get_knn(tree, [0] * dim, 1000, dim, dist_sq_dim)))
     for t in test:
-        result1.append(tuple(get_knn(kd_tree, t, 1000, dim, dist_sq_dim)))
+        result1.append(tuple(get_knn(tree, t, 1000, dim, dist_sq_dim)))
     end = timeit.default_timer() - start
     return end
 
 
 data1, data2, data3, data4 = preprocessing.KD_tree()
 N = 1000
-query = random.sample(data2, N)
-result = 0
-for i in range(5):
-    result += kd_and_knn(data2, dim, query)
+query = data2[0:(N-1)]
 
-print("Time for knn for 1000 points and k neighbors: ", result/5)
+start_tree = timeit.default_timer()
+kd_tree = make_kd_tree(data2, 3)
+end_tree = timeit.default_timer() - start_tree
+print("Time for tree construction ", end_tree)
+result = 0
+for i in range(100):
+    result += kd_and_knn(kd_tree, dim, query)
+
+print("Time for knn for 1000 points and k neighbors: ", result/100)
 print("\n\n")

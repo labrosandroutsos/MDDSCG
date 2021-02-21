@@ -1,5 +1,7 @@
 import math
 import sys
+from scipy.spatial import distance
+import numpy as np
 #Build:root, node_list = create_tree(nodes)
 #knn:knn(roo, node_list, k)
 
@@ -91,7 +93,7 @@ def knn(root, node_list, k):
         d2.append(y[1])
         d3.append(y[2])
 
-    for z in coords_array:
+    for z in coords_array[:999]:
         range = []
         e1 = binary_search(z, d1, 0, len(d1) - 1, 0, 0)  #dimensions(0,1,2)
         e2 = binary_search(z, d2, 0, len(d2) - 1, 1, 0)
@@ -134,11 +136,14 @@ def binary_search(q, coord, low, high, dimension, e):
 
 
 def bruteforce(rng, k):
-    coords_array = []
-    for x in rng:
-        if x.coords:
+    if rng:
+        closest = []
+        coords_array = []
+        for x in rng:
             coords_array.append(x.coords)
-    return coords_array[:k]
+            D = distance.squareform(distance.pdist(coords_array))
+            closest = np.argsort(D, axis=1)
+            return closest[:k]
 
 # returns the Node where the split takes place
 def find_split_node(root, range_coords, dimension=0):

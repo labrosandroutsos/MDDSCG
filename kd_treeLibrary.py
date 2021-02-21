@@ -7,15 +7,9 @@ import preprocessing
 import random
 
 
-def knn_query(d, d_query, k):
-    start = timeit.default_timer()
-    kd_tree = KDTree(d)
-    end = timeit.default_timer() - start
-    print("KD-tree construction time is:", end)
-    print("\n")
-
+def knn_query(tree, d_query, k):
     start_q = timeit.default_timer()
-    dist, ind = kd_tree.query(d_query, k)
+    dist, ind = tree.query(d_query, k)
     end_q = timeit.default_timer() - start_q
 
     #  print(ind)  # indices of k closest neighbors
@@ -47,30 +41,37 @@ if choose_data == 1:
     if N == "":
         query_data = data
     else:
-        query_data = random.sample(data, int(N))
+        query_data = data[0:int(N)]
 elif choose_data == 2:
     data = data2
     # get n random rows from data
     if N == "":
         query_data = data
     else:
-        query_data = random.sample(data, int(N))
+        query_data = data[0:int(N)]
 elif choose_data == 3:
     data = data3
     # get n random rows from data
     if N == "":
         query_data = data
     else:
-        query_data = random.sample(data, int(N))
+        query_data = data[0:int(N)]
 else:
     data = data4
     # get n random rows from data
     if N == "":
         query_data = data
     else:
-        query_data = random.sample(data, int(N))
+        query_data = data[0:int(N)]
 result = 0
-for i in range(5):
-    result += knn_query(data, query_data, num_neigh)
-print("Average time for knn queries after 100 iterations: ", result / 5)
+
+start = timeit.default_timer()
+kd_tree = KDTree(data)
+end = timeit.default_timer() - start
+print("KD-tree construction time is:", end)
+print("\n")
+
+for i in range(100):
+    result += knn_query(kd_tree, query_data, num_neigh)
+print("Average time for knn queries after 100 iterations: ", result / 100)
 
