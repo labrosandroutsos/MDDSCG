@@ -39,7 +39,7 @@ if N == "":
     print("We will use the existing points! ")
 
 # num_neigh = int(input("How many nearest neighbors do you want? Enter a number: "))
-num_neigh = 3
+num_neigh = 1000
 data1, data2, data3, data4 = preprocessing.KD_tree()
 if choose_data == 1:
     data = data1
@@ -70,7 +70,7 @@ else:
     else:
         query_data = random.sample(data, int(N))
 result = 0
-for i in range(100):
+for i in range(5):
     result += knn_query(data, query_data, num_neigh)
-print("Average time for knn queries after 100 iterations: ", result / 100)
+print("Average time for knn queries after 100 iterations: ", result / 5)
 

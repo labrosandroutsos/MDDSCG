@@ -63,15 +63,19 @@ def kd_and_knn(data, dimensions, test):
     kd_tree = make_kd_tree(data, dimensions)
     result1 = []
     start = timeit.default_timer()
-    result1.append(tuple(get_knn(kd_tree, [0] * dim, 3, dim, dist_sq_dim)))
+    result1.append(tuple(get_knn(kd_tree, [0] * dim, 1000, dim, dist_sq_dim)))
     for t in test:
-        result1.append(tuple(get_knn(kd_tree, t, 3, dim, dist_sq_dim)))
+        result1.append(tuple(get_knn(kd_tree, t, 1000, dim, dist_sq_dim)))
     end = timeit.default_timer() - start
     return end
 
 
 data1, data2, data3, data4 = preprocessing.KD_tree()
-N = 10
-query = random.sample(data4, N)
-print("Time for knn for N points and 3 neighbors: ", kd_and_knn(data4, dim, query))
+N = 1000
+query = random.sample(data2, N)
+result = 0
+for i in range(5):
+    result += kd_and_knn(data2, dim, query)
+
+print("Time for knn for 1000 points and k neighbors: ", result/5)
 print("\n\n")

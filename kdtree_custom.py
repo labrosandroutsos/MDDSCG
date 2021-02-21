@@ -275,14 +275,18 @@ COMPARE_CHILD = {
 
 
 data1, data2, data3, data4 = preprocessing.KD_tree()
+print("data1", len(data1))
+print("data2", len(data2))
 points = []
-for i in data4:
+for i in data1:
     points.append({1: i[0], 2: i[1], 3: i[2]})
 
 # Create the kd tree.
+start = timeit.default_timer()
 root = create(points, dimensions=3)
+print("tree", timeit.default_timer() - start)
 
-N = 10
+N = 100
 # random query sample.
 query = random.sample(points, N)
 
@@ -294,9 +298,11 @@ result = 0
 # Knn query
 for i in range(N):
     start_q = timeit.default_timer()
-    ans = root.search_knn(query[i], k=3, dist=f)
+    ans = root.search_knn(query[i], k=1000, dist=f)
     end_q = timeit.default_timer() - start_q
     result += end_q
+    if result > 120:
+        break
 
 print("Time for knn queries for N random points and 3 neighbors: ", result)
 # print("visualizing the kd-tree: ")
